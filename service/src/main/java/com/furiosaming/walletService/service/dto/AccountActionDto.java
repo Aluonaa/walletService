@@ -1,4 +1,4 @@
-package com.furiosaming.walletService.persistence.model;
+package com.furiosaming.walletService.service.dto;
 
 import com.furiosaming.walletService.persistence.model.enums.ActionType;
 import lombok.AllArgsConstructor;
@@ -10,9 +10,9 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AccountAction {
+public class AccountActionDto {
     private Long id;
     private ActionType actionType;
     private Date date;
-    private BankAccount bankAccount;
+    private BankAccountDto bankAccountDto;
 }

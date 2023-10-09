@@ -7,4 +7,5 @@ import java.util.List;
 public interface PersonRepository {
     Person getPerson(String uuid, List<Person> personList);
     Person createPerson(Person person, List<Person> personList);
+    Person authorize(String login, String password, List<Person> personList);
 }
