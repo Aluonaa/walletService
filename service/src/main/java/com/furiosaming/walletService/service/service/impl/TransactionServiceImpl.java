@@ -26,7 +26,6 @@ public class TransactionServiceImpl implements TransactionService {
      * @param cash сумма транзакции
      * @param transactionId уникальный идентификатор транзакции
      * @param transactionType тип транзакции
-     * @return возвращает зарегистрированную транзакцию
      */
     @Override
     public void createTransaction(Person person,

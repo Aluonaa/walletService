@@ -1,7 +1,6 @@
 package com.furiosaming.walletService.service.service;
 
 import com.furiosaming.walletService.persistence.model.Person;
-import com.furiosaming.walletService.persistence.model.Transaction;
 import com.furiosaming.walletService.persistence.model.enums.TransactionType;
 
 /**
@@ -14,7 +13,6 @@ public interface TransactionService {
      * @param cash сумма транзакции
      * @param transactionId уникальный идентификатор транзакции
      * @param transactionType тип транзакции
-     * @return возвращает зарегистрированную транзакцию
      */
     void createTransaction(Person person, Double cash, Long transactionId, TransactionType transactionType);
 }
