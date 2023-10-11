@@ -7,12 +7,15 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
+/**
+ * Класс, описывающий действия, связанные с аккаунтом
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class AccountAction {
-    private Long id;
+    /** Тип действия в аккаунте */
     private ActionType actionType;
+    /** Дата действия */
     private Date date;
-    private BankAccount bankAccount;
 }

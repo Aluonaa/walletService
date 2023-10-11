@@ -1,12 +1,15 @@
 package com.furiosaming.walletService.repository;
 
 import com.furiosaming.walletService.persistence.model.BankAccount;
-import com.furiosaming.walletService.persistence.model.Person;
 
-import java.util.List;
-
+/**
+ * Интерфейс репозитория банковского счета
+ */
 public interface BankAccountRepository {
-    BankAccount getBankAccount(Long id, List<BankAccount> bankAccountList);
-    List<BankAccount> getBankAccountsByPerson(String uuid, List<Person> personList);
-    BankAccount createBankAccount(BankAccount bankAccount, List<BankAccount> bankAccountList);
+    /**
+     * Метод имитирует создание в базе данных банковского счета
+     * @param id уникальный идентификатор банковского счета
+     * @return созданный банковский счет
+     */
+    BankAccount createBankAccount(Long id);
 }

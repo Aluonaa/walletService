@@ -4,15 +4,22 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Класс, описывающий банковский счет клиента
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class BankAccount {
+    /** Уникальный идентификатор банковского счета */
     private Long id;
-    private Person person;
+    /** Сумма, которая находится на счету в данный момент */
     private double cashValue;
-    private List<Transaction> transactions;
-    private List<AccountAction> accountActions;
+    /** Список транзакций, проводившихся на данном счете */
+    private List<Transaction> transactions = new ArrayList<>();
+    /** Список действий, связанных с аккаунтом пользователя */
+    private List<AccountAction> accountActions = new ArrayList<>();
 }
