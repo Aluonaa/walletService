@@ -10,7 +10,6 @@ public class AppConstants {
     public static final String LOGIN_ALREADY_EXISTS = "Такой логин уже существует";
     public static final String ID_TRASACTION_ALREADY_EXISTS = "Такой id транзакции уже существует";
 
-    public static String PERSON_NOT_FOUND = "Пользователь не найден";
     public static String MISSING_BANK_ACCOUNT_ID = "Не введен id банковского счета";
     public static String MISSING_FIELDS = "Некоторые поля не заполнены";
 

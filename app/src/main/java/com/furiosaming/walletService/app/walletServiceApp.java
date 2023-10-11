@@ -12,9 +12,8 @@ import java.util.List;
  * Программа walletService Сервис для управления
  * кредитными/дебетовыми транзакциями от имени игроков
  *
- * @автор Strelets Alyona
- * @версия 1.0
- * @от   2023-10-11
+ * @author  Strelets Alyona
+ * @version  1.0
  */
 public class walletServiceApp {
     /**

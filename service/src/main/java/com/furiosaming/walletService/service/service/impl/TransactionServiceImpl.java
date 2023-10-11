@@ -29,7 +29,7 @@ public class TransactionServiceImpl implements TransactionService {
      * @return возвращает зарегистрированную транзакцию
      */
     @Override
-    public Transaction createTransaction(Person person,
+    public void createTransaction(Person person,
             Double cash, Long transactionId, TransactionType transactionType) {
         Transaction transaction = new Transaction();
         transaction.setId(transactionId);
@@ -37,6 +37,5 @@ public class TransactionServiceImpl implements TransactionService {
         transaction.setCashValue(cash);
         transaction.setDate(new Date());
         transactionRepository.createTransaction(transaction, person.getBankAccount().getTransactions());
-        return transaction;
     }
 }

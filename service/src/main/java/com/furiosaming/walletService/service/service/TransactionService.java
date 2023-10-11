@@ -16,5 +16,5 @@ public interface TransactionService {
      * @param transactionType тип транзакции
      * @return возвращает зарегистрированную транзакцию
      */
-    Transaction createTransaction(Person person, Double cash, Long transactionId, TransactionType transactionType);
+    void createTransaction(Person person, Double cash, Long transactionId, TransactionType transactionType);
 }
