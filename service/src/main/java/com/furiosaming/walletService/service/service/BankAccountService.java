@@ -29,6 +29,6 @@ public interface BankAccountService {
      * @return возвращает либо успешный статус операции и текущую сумму на счету,
      * либо описание ошибки
      */
-    Response<Double> cashInOut(List<Person> personList, Person person, Long transactionId,
-                               Double cash, TransactionType transactionType);
+    Response<Long> cashInOut(List<Person> personList, Person person, Long transactionId,
+                               Long cash, TransactionType transactionType);
 }

@@ -36,9 +36,9 @@ public class InputErrorsCorrection {
      * @return возвращает сумму транзакции
      * @throws IOException исключения ввода-вывода
      */
-    public static Double inputSumForCashInOut(List<Person> personList) throws IOException {
+    public static Long inputSumForCashInOut(List<Person> personList) throws IOException {
         System.out.println("Введите сумму:");
-        double sum = 0;
+        long sum = 0;
         sum = sumInputErrorsHandling(sum, personList);
         return sum;
     }
@@ -51,10 +51,10 @@ public class InputErrorsCorrection {
      * @return сумма транзакции
      * @throws IOException исключения ввода-вывода
      */
-    public static Double sumInputErrorsHandling(Double sum, List<Person> personList)
+    public static Long sumInputErrorsHandling(Long sum, List<Person> personList)
             throws IOException {
         try {
-            sum = Double.valueOf(in.readLine());
+            sum = Long.valueOf(in.readLine());
         }
         catch (NumberFormatException | IOException n){
             System.out.println("Введены недопустимые символы, попробуйте еще раз.");

@@ -50,7 +50,7 @@ public class ActionsForAuthorized {
      * @throws IOException исключения ввода-вывода
      */
     public static void cashIn(List<Person> personList) throws IOException {
-        Response<Double> result = bankAccountService.cashInOut(personList, currentUser,
+        Response<Long> result = bankAccountService.cashInOut(personList, currentUser,
                 inputIdForCashInOut(personList), inputSumForCashInOut(personList), TransactionType.CASH_IN);
         System.out.println(result.getDescription());
         if(result.isStatus()){
@@ -69,7 +69,7 @@ public class ActionsForAuthorized {
      * @throws IOException исключения ввода-вывода
      */
     public static void cashOut(List<Person> personList) throws IOException {
-        Response<Double> result = bankAccountService.cashInOut(personList, currentUser,
+        Response<Long> result = bankAccountService.cashInOut(personList, currentUser,
                 inputIdForCashInOut(personList), inputSumForCashInOut(personList), TransactionType.CASH_OUT);
         System.out.println(result.getDescription());
         if(result.isStatus()){

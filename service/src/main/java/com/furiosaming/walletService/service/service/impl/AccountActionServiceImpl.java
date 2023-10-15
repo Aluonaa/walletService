@@ -13,7 +13,7 @@ import java.util.Date;
  */
 public class AccountActionServiceImpl implements AccountActionService {
     /** Внедрение зависимости репозитория действий с аккаунтом */
-    AccountActionRepository accountActionRepository;
+    private final AccountActionRepository accountActionRepository;
 
     /**
      * Конструктор класса

@@ -14,7 +14,7 @@ import java.util.Date;
 public class TransactionServiceImpl implements TransactionService {
 
     /** Внедрение зависимости репозитория транзакций */
-    TransactionRepository transactionRepository;
+    private final TransactionRepository transactionRepository;
 
     /** Конструктор класса */
     public TransactionServiceImpl(TransactionRepository transactionRepository){
@@ -29,7 +29,7 @@ public class TransactionServiceImpl implements TransactionService {
      */
     @Override
     public void createTransaction(Person person,
-            Double cash, Long transactionId, TransactionType transactionType) {
+            Long cash, Long transactionId, TransactionType transactionType) {
         Transaction transaction = new Transaction();
         transaction.setId(transactionId);
         transaction.setTransactionType(transactionType);

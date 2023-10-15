@@ -14,5 +14,5 @@ public interface TransactionService {
      * @param transactionId уникальный идентификатор транзакции
      * @param transactionType тип транзакции
      */
-    void createTransaction(Person person, Double cash, Long transactionId, TransactionType transactionType);
+    void createTransaction(Person person, Long cash, Long transactionId, TransactionType transactionType);
 }
