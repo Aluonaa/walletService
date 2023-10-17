@@ -8,6 +8,7 @@ import com.furiosaming.walletService.repository.impl.TransactionRepositoryImpl;
 import com.furiosaming.walletService.service.service.AccountActionService;
 import com.furiosaming.walletService.service.service.BankAccountService;
 import com.furiosaming.walletService.service.service.PersonService;
+import com.furiosaming.walletService.service.service.TransactionService;
 import com.furiosaming.walletService.service.service.impl.AccountActionServiceImpl;
 import com.furiosaming.walletService.service.service.impl.BankAccountServiceImpl;
 import com.furiosaming.walletService.service.service.impl.PersonServiceImpl;
@@ -33,4 +34,6 @@ public class StaticVariables {
             new BankAccountServiceImpl(new BankAccountRepositoryImpl(), new TransactionServiceImpl(new TransactionRepositoryImpl()));
     /** Переменная сервиса действий в аккаунте */
     public static AccountActionService accountActionService = new AccountActionServiceImpl(new AccountActionRepositoryImpl());
+
+    public static TransactionService transactionService = new TransactionServiceImpl(new TransactionRepositoryImpl());
 }

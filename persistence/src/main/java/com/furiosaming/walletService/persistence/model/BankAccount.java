@@ -20,6 +20,6 @@ public class BankAccount {
     private long cashValue;
     /** Список транзакций, проводившихся на данном счете */
     private List<Transaction> transactions = new ArrayList<>();
-    /** Список действий, связанных с аккаунтом пользователя */
-    private List<AccountAction> accountActions = new ArrayList<>();
+    /** Пользователь, владелец счета */
+    private Person person;
 }

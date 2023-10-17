@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet author="StreletsA" id="001-create-sequences">
+        <createSequence sequenceName="id_person_seq"
+                        schemaName="wallet_service_schema"
+                        cycle="false"
+                        minValue="1"
+                        maxValue="9223372036854775807"
+                        startValue="2"
+                        incrementBy="1"/>
+        <createSequence sequenceName="id_bank_account_seq"
+                        schemaName="wallet_service_schema"
+                        cycle="false"
+                        minValue="1"
+                        maxValue="9223372036854775807"
+                        startValue="2"
+                        incrementBy="1"/>
+        <createSequence sequenceName="id_account_action_seq"
+                        schemaName="wallet_service_schema"
+                        cycle="false"
+                        minValue="1"
+                        maxValue="9223372036854775807"
+                        startValue="1"
+                        incrementBy="1"/>
+        <createSequence sequenceName="id_transaction_seq"
+                        schemaName="wallet_service_schema"
+                        cycle="false"
+                        minValue="1"
+                        maxValue="9223372036854775807"
+                        startValue="1"
+                        incrementBy="1"/>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,25 @@
+version: '3.9'
+services:
+  postgres:
+    container_name: walletService
+    image: postgres:13.3-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: walletService
+      POSTGRES_PASSWORD: strelets
+      POSTGRES_USER: strelets
+    ports:
+      - "5432:5432"
+# Инструкция для развертывания postgre в докере:
+# 1. Запустить docker приложение
+# 2. В среде разработки (в моем случае intellij idea 2023) в текущем
+#    проекте открыть терминал и ввести:
+#    docker-compose up
+# 3. После того, как контейнер запустится, необходимо открыть раздел
+#    работы с базами данных, добавить новую бд postgres с параметрами:
+#    Host: localhost
+#    Port: 5432
+#    Database: walletService
+#    User: strelets
+#    Password: strelets
+# 4. Затем нажать Test connection, после этого Apply и Ok
