@@ -97,22 +97,4 @@ public class TransactionServiceTest {
                 person, 100L, 11L, TransactionType.CASH_IN);
         Assertions.assertEquals(AppConstants.MISSING_FIELDS, response.getDescription());
     }
-
-//    @Test
-//    void shouldCreateTransaction(){
-//        Person person = new Person(1L, "1", "1", "1", new BankAccount(), new ArrayList<>());
-//        Transaction transaction = new Transaction();
-//        transaction.setId(1L);
-//        transaction.setDate(LocalDateTime.now());
-//        transaction.setTransactionCode(11L);
-//        transaction.setTransactionType(TransactionType.CASH_IN);
-//        transaction.setCashValue(100L);
-//        transaction.setBankAccount(new BankAccount());
-//        transaction.getBankAccount().setPerson(person);
-//        Mockito.when(transactionRepositoryImpl.createTransaction(new Transaction())).thenReturn(transaction);
-//        Response<Transaction> response = transactionService.createTransaction(
-//                person, 100L, 11L, TransactionType.CASH_IN);
-//        Assertions.assertEquals(AppConstants.SUCCESS, response.getDescription());
-//    }
-
 }

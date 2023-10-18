@@ -62,18 +62,4 @@ public class AccountActionServiceTest {
                 1L, "1", "1", "1", new BankAccount(), new ArrayList<>()), null);
         Assertions.assertEquals(AppConstants.MISSING_FIELDS, response.getDescription());
     }
-
-//    @Test
-//    void shouldCreateAccountAction(){
-//        Person person = new Person(1L, "1", "1", "1", new BankAccount(), new ArrayList<>());
-//        AccountAction accountActionSuccess = new AccountAction(1L, ActionType.LOG_IN, LocalDateTime.now(), person);
-//        Mockito.when(accountActionRepositoryImpl.createAccountAction(accountActionSuccess)).thenReturn(
-//                accountActionSuccess);
-//        System.out.println(accountActionRepositoryImpl.createAccountAction(accountActionSuccess));
-//        Response<AccountAction> response = accountActionService.createAccountAction(person, ActionType.LOG_IN);
-//        System.out.println(response.getResult());
-//        Assertions.assertEquals(AppConstants.SUCCESS, response.getDescription());
-//    }
-
-
 }
