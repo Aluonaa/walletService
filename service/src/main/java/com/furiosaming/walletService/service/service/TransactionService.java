@@ -24,7 +24,7 @@ public interface TransactionService {
     /**
      * Метод проверки уникальности кода транзакции
      * @param transactionCode код транзакции
-     * @return найденная транзакция или ошибка
+     * @return транзакция не найдена (успех) или ошибка
      */
     Response<Long> getTransactionByTransactionCode(Long transactionCode);
 

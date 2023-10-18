@@ -50,11 +50,14 @@ public class BankAccountServiceImpl implements BankAccountService {
      */
     @Override
     public Response<BankAccount> createBankAccount(Person person) {
-            BankAccount bankAccount = bankAccountRepository.createBankAccount(person);
-            if(bankAccount.getId() == null){
-                return new Response.Builder<BankAccount>().failed(AppConstants.FAILED_TO_CREATE).build();
+            if(person != null && person.getId() != null){
+                BankAccount bankAccount = bankAccountRepository.createBankAccount(person);
+                if(bankAccount == null){
+                    return new Response.Builder<BankAccount>().failed(AppConstants.FAILED_TO_CREATE).build();
+                }
+                else return new Response.Builder<BankAccount>().success(bankAccount).build();
             }
-            else return new Response.Builder<BankAccount>().success(bankAccount).build();
+            else return new Response.Builder<BankAccount>().missing(AppConstants.MISSING_FIELDS).build();
     }
 
 
@@ -71,7 +74,7 @@ public class BankAccountServiceImpl implements BankAccountService {
     @Override
     public Response<Long> cashInOut(Person person,
                                       Long transactionCode, Long cash, TransactionType transactionType) {
-        if (cash<=0){
+        if (cash == null || cash<=0){
             return new Response.Builder<Long>().wrongData(AppConstants.INCORRECT_SUM).build();
         }
         Response<Long> transactionResponse = transactionService.getTransactionByTransactionCode(transactionCode);

@@ -23,14 +23,17 @@ public class AccountActionRepositoryImpl implements AccountActionRepository {
                 properties.getProperty("datasource.username"),
                 properties.getProperty("datasource.password"));
              PreparedStatement preparedStatement = connection.prepareStatement(sqlInsertPerson, Statement.RETURN_GENERATED_KEYS)) {
+            connection.setAutoCommit(false);
             preparedStatement.setString(1, String.valueOf(accountAction.getActionType()));
             preparedStatement.setTimestamp(2, Timestamp.valueOf(accountAction.getDate()));
             preparedStatement.setLong(3, accountAction.getPerson().getId());
             preparedStatement.executeUpdate();
+            connection.commit();
             ResultSet result = preparedStatement.getGeneratedKeys();
             if(result.next()){
                 accountAction.setId(result.getLong(1));
                 System.out.println("Действие аккаунта зарегистрировано");
+                return accountAction;
             }
         } catch (SQLException exception) {
             System.out.println("Got SQL Exception for person create" + exception.getMessage());

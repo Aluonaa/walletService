@@ -15,5 +15,17 @@
             <column name="cash_value" value="100000"/>
             <column name="person" value="1"/>
         </insert>
+        <insert schemaName="wallet_service_schema" tableName="transaction">
+            <column name="transaction_type" value="CASH_IN"/>
+            <column name="cash_value" value="100"/>
+            <column name="date" value="2023-10-18 13:09:05.8240914"/>
+            <column name="bank_account" value="1"/>
+            <column name="transaction_code" value="1"/>
+        </insert>
+        <insert schemaName="wallet_service_schema" tableName="account_action">
+            <column name="action_type" value="LOG_IN"/>
+            <column name="date" value="2023-10-18 13:09:05.8240914"/>
+            <column name="person" value="1"/>
+        </insert>
     </changeSet>
 </databaseChangeLog>

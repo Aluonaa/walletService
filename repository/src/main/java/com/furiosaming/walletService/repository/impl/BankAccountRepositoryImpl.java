@@ -25,9 +25,11 @@ public class BankAccountRepositoryImpl implements BankAccountRepository {
                 properties.getProperty("datasource.username"),
                 properties.getProperty("datasource.password"));
              PreparedStatement preparedStatement = connection.prepareStatement(sqlInsertBankAccount, Statement.RETURN_GENERATED_KEYS)) {
+            connection.setAutoCommit(false);
             preparedStatement.setLong(1, 0);
             preparedStatement.setLong(2, person.getId());
             preparedStatement.executeUpdate();
+            connection.commit();
             ResultSet result = preparedStatement.getGeneratedKeys();
             if(result.next()){
                 bankAccount.setId(result.getLong(1));

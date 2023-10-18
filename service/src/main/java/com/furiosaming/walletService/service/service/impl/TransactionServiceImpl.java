@@ -25,6 +25,11 @@ public class TransactionServiceImpl implements TransactionService {
         this.transactionRepository = transactionRepository;
     }
 
+    /**
+     * Метод проверки уникальности кода транзакции
+     * @param transactionCode код транзакции
+     * @return транзакция не найдена (успех) или ошибка
+     */
     @Override
     public Response<Long> getTransactionByTransactionCode(Long transactionCode) {
         if(transactionCode == null){
@@ -61,16 +66,20 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public Response<Transaction> createTransaction(Person person,
             Long cash, Long transactionCode, TransactionType transactionType) {
-        Transaction transaction = new Transaction();
-        transaction.setTransactionType(transactionType);
-        transaction.setCashValue(cash);
-        transaction.setDate(LocalDateTime.now());
-        transaction.setBankAccount(person.getBankAccount());
-        transaction.setTransactionCode(transactionCode);
-        Transaction createdTransaction = transactionRepository.createTransaction(transaction);
-        if (createdTransaction.getId() == null){
-            return new Response.Builder<Transaction>().failed(AppConstants.FAILED_TO_CREATE).build();
+        if(person != null && person.getId() != null && cash != null && transactionCode != null
+        && transactionType != null){
+            Transaction transaction = new Transaction();
+            transaction.setTransactionType(transactionType);
+            transaction.setCashValue(cash);
+            transaction.setDate(LocalDateTime.now());
+            transaction.setBankAccount(person.getBankAccount());
+            transaction.setTransactionCode(transactionCode);
+            Transaction createdTransaction = transactionRepository.createTransaction(transaction);
+            if (createdTransaction.getId() == null){
+                return new Response.Builder<Transaction>().failed(AppConstants.FAILED_TO_CREATE).build();
+            }
+            else return new Response.Builder<Transaction>().success(createdTransaction).build();
         }
-        else return new Response.Builder<Transaction>().success(createdTransaction).build();
+        else return new Response.Builder<Transaction>().missing(AppConstants.MISSING_FIELDS).build();
     }
 }

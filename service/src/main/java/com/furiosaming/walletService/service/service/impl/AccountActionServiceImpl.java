@@ -32,15 +32,18 @@ public class AccountActionServiceImpl implements AccountActionService {
      */
     @Override
     public Response<AccountAction> createAccountAction(Person person, ActionType actionType) {
-        AccountAction accountAction = new AccountAction();
-        accountAction.setActionType(actionType);
-        accountAction.setDate(LocalDateTime.now());
-        accountAction.setPerson(person);
-        AccountAction createdAccountAction = accountActionRepository.createAccountAction(accountAction);
-        if(createdAccountAction != null){
-            person.getAccountActions().add(createdAccountAction);
-            return new Response.Builder<AccountAction>().success(createdAccountAction).build();
+        if (person != null && person.getId() != null && actionType != null){
+            AccountAction accountAction = new AccountAction();
+            accountAction.setActionType(actionType);
+            accountAction.setDate(LocalDateTime.now());
+            accountAction.setPerson(person);
+            AccountAction createdAccountAction = accountActionRepository.createAccountAction(accountAction);
+            if(createdAccountAction != null){
+                person.getAccountActions().add(createdAccountAction);
+                return new Response.Builder<AccountAction>().success(createdAccountAction).build();
+            }
+            else return new Response.Builder<AccountAction>().failed(AppConstants.FAILED_TO_CREATE).build();
         }
-        else return new Response.Builder<AccountAction>().failed(AppConstants.FAILED_TO_CREATE).build();
+        else return new Response.Builder<AccountAction>().missing(AppConstants.MISSING_FIELDS).build();
     }
 }
