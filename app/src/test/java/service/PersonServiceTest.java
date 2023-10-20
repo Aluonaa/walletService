@@ -8,22 +8,15 @@ import com.furiosaming.walletService.service.response.Response;
 import com.furiosaming.walletService.service.service.BankAccountService;
 import com.furiosaming.walletService.service.service.PersonService;
 import com.furiosaming.walletService.service.service.impl.PersonServiceImpl;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.util.ArrayList;
 
 public class PersonServiceTest {
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(
-            "postgres:13.3-alpine"
-    );
-
     @Mock
     PersonRepository personRepository;
     @Mock
@@ -33,16 +26,6 @@ public class PersonServiceTest {
     public PersonServiceTest(){
         MockitoAnnotations.openMocks(this);
         this.personService = new PersonServiceImpl(personRepository, bankAccountService);
-    }
-
-    @BeforeAll
-    static void beforeAll() {
-        postgres.start();
-    }
-
-    @AfterAll
-    static void afterAll() {
-        postgres.stop();
     }
 
     @Test

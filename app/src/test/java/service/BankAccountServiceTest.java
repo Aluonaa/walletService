@@ -10,20 +10,13 @@ import com.furiosaming.walletService.service.response.Response;
 import com.furiosaming.walletService.service.service.BankAccountService;
 import com.furiosaming.walletService.service.service.TransactionService;
 import com.furiosaming.walletService.service.service.impl.BankAccountServiceImpl;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.testcontainers.containers.PostgreSQLContainer;
 
 public class BankAccountServiceTest  {
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(
-            "postgres:13.3-alpine"
-    );
-
     BankAccountService bankAccountService;
     @Mock
     TransactionService transactionService;
@@ -33,16 +26,6 @@ public class BankAccountServiceTest  {
     public BankAccountServiceTest(){
         MockitoAnnotations.openMocks(this);
         this.bankAccountService = new BankAccountServiceImpl(bankAccountRepositoryImpl, transactionService);
-    }
-
-    @BeforeAll
-    static void beforeAll() {
-        postgres.start();
-    }
-
-    @AfterAll
-    static void afterAll() {
-        postgres.stop();
     }
 
     @Test
