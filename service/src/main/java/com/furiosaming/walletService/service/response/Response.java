@@ -69,6 +69,13 @@ public class Response<T> {
             response.result = null;
             return this;
         }
+
+        public Builder<T> failed(String description) {
+            response.status = false;
+            response.description = description;
+            response.result = null;
+            return this;
+        }
         /** Метод создания сущности ответа */
         public Response<T> build() {
             return response;

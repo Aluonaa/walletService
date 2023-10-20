@@ -10,11 +10,6 @@ import com.furiosaming.walletService.service.response.Response;
 import com.furiosaming.walletService.service.service.BankAccountService;
 import com.furiosaming.walletService.service.service.TransactionService;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Stream;
-
 /**
  * Имплементация интерфейса сервиса банковского счета
  */
@@ -31,51 +26,65 @@ public class BankAccountServiceImpl implements BankAccountService {
         this.bankAccountRepository = bankAccountRepository;
         this.transactionService = transactionService;
     }
+
     /**
-     * Метод создания банковского счета
-     * @param id уникальный идентификатор счета
-     * @param personList список всех пользователей
-     * @return возвращает созданный счет или описание ошибки
+     * Находит банковский счет по id
+     * @param id уникальный идентификатор пользователя
+     * @return банковский счет или описание ошибки
      */
-    @Override
-    public Response<BankAccount> createBankAccount(Long id, List<Person> personList) {
-        if(id != null){
-            BankAccount bankAccount = bankAccountRepository.createBankAccount(id);
-            return new Response.Builder<BankAccount>().success(bankAccount).build();
+    public Response<BankAccount> getBankAccountByPersonId(Long id){
+        if(id == null){
+            return new Response.Builder<BankAccount>().missing(AppConstants.MISSING_PERSON_ID).build();
         }
-        else return new Response.Builder<BankAccount>().missing(AppConstants.MISSING_BANK_ACCOUNT_ID).build();
+        BankAccount bankAccount = bankAccountRepository.getBankAccountByPersonId(id);
+        if(bankAccount == null){
+            return new Response.Builder<BankAccount>().notFound(AppConstants.BANK_ACCOUNT_NOT_FOUND).build();
+        }
+        else return new Response.Builder<BankAccount>().success(bankAccount).build();
     }
 
     /**
+     * Метод создания банковского счета
+     * @param person владелец аккаунта
+     * @return возвращает созданный счет или описание ошибки
+     */
+    @Override
+    public Response<BankAccount> createBankAccount(Person person) {
+            if(person != null && person.getId() != null){
+                BankAccount bankAccount = bankAccountRepository.createBankAccount(person);
+                if(bankAccount == null){
+                    return new Response.Builder<BankAccount>().failed(AppConstants.FAILED_TO_CREATE).build();
+                }
+                else return new Response.Builder<BankAccount>().success(bankAccount).build();
+            }
+            else return new Response.Builder<BankAccount>().missing(AppConstants.MISSING_FIELDS).build();
+    }
+
+
+
+    /**
      * Метод вывода средств и пополнения счета
-     * @param personList список пользователей
      * @param person текущий пользователь, от лица которого совершается операция
-     * @param transactionId уникальный идентификатор транзакции
+     * @param transactionCode уникальный идентификатор транзакции
      * @param cash сумма транзакции
      * @param transactionType тип транзакции
      * @return возвращает либо успешный статус операции и текущую сумму на счету,
      * либо описание ошибки
      */
     @Override
-    public Response<Double> cashInOut(List<Person> personList, Person person,
-                                      Long transactionId, Double cash, TransactionType transactionType) {
-        if (cash<=0){
-            return new Response.Builder<Double>().wrongData(AppConstants.INCORRECT_SUM).build();
+    public Response<Long> cashInOut(Person person,
+                                      Long transactionCode, Long cash, TransactionType transactionType) {
+        if (cash == null || cash<=0){
+            return new Response.Builder<Long>().wrongData(AppConstants.INCORRECT_SUM).build();
         }
-        Optional<Transaction> optional = personList.stream()
-                .flatMap(p -> Stream.of(p.getBankAccount()))
-                .flatMap(b -> Stream.of(b.getTransactions()))
-                .flatMap(List::stream)
-                .filter(transaction -> Objects.equals(transactionId, transaction.getId()))
-                .findFirst();
-        if(optional.isPresent()){
-            return new Response.Builder<Double>().alreadyExist(AppConstants.ID_TRASACTION_ALREADY_EXISTS).build();
+        Response<Long> transactionResponse = transactionService.getTransactionByTransactionCode(transactionCode);
+        if(transactionResponse.getDescription().equals(AppConstants.TRASACTION_CODE_ALREADY_EXISTS)){
+            return new Response.Builder<Long>().alreadyExist(AppConstants.TRASACTION_CODE_ALREADY_EXISTS).build();
         }
-
         if(transactionType.equals(TransactionType.CASH_IN)){
-            return cashIn(person, cash, transactionId, transactionType);
+            return cashIn(person, cash, transactionCode, transactionType);
         }else {
-            return cashOut(person, cash, transactionId, transactionType);
+            return cashOut(person, cash, transactionCode, transactionType);
         }
     }
 
@@ -87,11 +96,14 @@ public class BankAccountServiceImpl implements BankAccountService {
      * @param transactionType тип транзакции
      * @return возвращает либо текущуюсумму на счете, либо описание ошибки
      */
-    public Response<Double> cashIn(Person person, Double cash, Long transactionId, TransactionType transactionType) {
-        transactionService.createTransaction(person, cash, transactionId, transactionType);
-        person.getBankAccount().setCashValue(person.getBankAccount().getCashValue() + cash);
-        Double result = person.getBankAccount().getCashValue();
-        return new Response.Builder<Double>().success(result).build();
+    public Response<Long> cashIn(Person person, Long cash, Long transactionId, TransactionType transactionType) {
+        Response<Transaction> transactionResponse = transactionService.createTransaction(person, cash, transactionId, transactionType);
+        if(transactionResponse.isStatus()){
+            person.getBankAccount().setCashValue(person.getBankAccount().getCashValue() + cash);
+            Long result = person.getBankAccount().getCashValue();
+            return new Response.Builder<Long>().success(result).build();
+        }
+        else return new Response.Builder<Long>().failed(AppConstants.FAILED_TO_CASH_IN).build();
     }
 
     /**
@@ -102,15 +114,15 @@ public class BankAccountServiceImpl implements BankAccountService {
      * @param transactionType тип транзакции
      * @return возвращает либо текущуюсумму на счете, либо описание ошибки
      */
-    public Response<Double> cashOut(Person person, Double cash, Long transactionId, TransactionType transactionType) {
+    public Response<Long> cashOut(Person person, Long cash, Long transactionId, TransactionType transactionType) {
         if(person.getBankAccount().getCashValue() < cash){
-            return new Response.Builder<Double>().wrongData(AppConstants.INSUFFICIENT_FUNDS).build();
+            return new Response.Builder<Long>().wrongData(AppConstants.INSUFFICIENT_FUNDS).build();
         }
         else{
             transactionService.createTransaction(person, cash, transactionId, transactionType);
             person.getBankAccount().setCashValue(person.getBankAccount().getCashValue() - cash);
-            Double result = person.getBankAccount().getCashValue();
-            return new Response.Builder<Double>().success(result).build();
+            Long result = person.getBankAccount().getCashValue();
+            return new Response.Builder<Long>().success(result).build();
         }
     }
 }

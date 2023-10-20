@@ -2,11 +2,10 @@ package com.furiosaming.walletService.app;
 
 
 import com.furiosaming.walletService.In.menu.Menu;
-import com.furiosaming.walletService.persistence.model.Person;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+
+import static com.furiosaming.walletService.app.liquibase.Liquibase.createDataBase;
 
 /**
  * Программа walletService Сервис для управления
@@ -25,7 +24,7 @@ public class walletServiceApp {
      * @throws IOException исключения ввода-вывода
      */
     public static void main(String[] args) throws IOException {
-        List<Person> personList = new ArrayList<>();
-        Menu.start(personList);
+        createDataBase();
+        Menu.start();
     }
 }

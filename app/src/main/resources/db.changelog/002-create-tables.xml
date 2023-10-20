@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet author="StreletsA" id="002-create-tables">
+        <createTable schemaName="wallet_service_schema" tableName="person" remarks="Пользователь">
+            <column autoIncrement="true" name="id" type="BIGINT" value="next-val('id_person_seq')">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="passport" type="VARCHAR(300)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="login" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bank_account" type="BIGINT">
+            </column>
+        </createTable>
+
+
+        <createTable schemaName="wallet_service_schema" tableName="bank_account" remarks="Банковский счет">
+            <column autoIncrement="true" name="id" type="BIGINT" value="next-val('id_bank_account_seq')">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="cash_value" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="person" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+
+        <createTable schemaName="wallet_service_schema" tableName="account_action" remarks="Действие аккаунта">
+            <column autoIncrement="true" name="id" type="BIGINT" value="next-val('id_account_action_seq')">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="action_type" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="person" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+
+        <createTable schemaName="wallet_service_schema" tableName="transaction" remarks="Транзакция">
+            <column autoIncrement="true" name="id" type="BIGINT" value="next-val('id_transaction_seq')">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="transaction_type" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cash_value" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bank_account" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="transaction_code" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableSchemaName = "wallet_service_schema"
+                                 baseTableName="bank_account" baseColumnNames="person"
+                                 constraintName="bank_account_person_person_id"
+                                 referencedTableSchemaName = "wallet_service_schema"
+                                 referencedTableName="person" referencedColumnNames="id" onUpdate="CASCADE" />
+
+        <addForeignKeyConstraint baseTableSchemaName = "wallet_service_schema"
+                                 baseTableName="person" baseColumnNames="bank_account"
+                                 constraintName="person_bank_account_bank_account_id"
+                                 referencedTableSchemaName = "wallet_service_schema"
+                                 referencedTableName="bank_account" referencedColumnNames="id" onUpdate="CASCADE" />
+
+        <addForeignKeyConstraint baseTableSchemaName = "wallet_service_schema"
+                                 baseTableName="account_action" baseColumnNames="person"
+                                 constraintName="account_action_person_person_id"
+                                 referencedTableSchemaName = "wallet_service_schema"
+                                 referencedTableName="person" referencedColumnNames="id" onUpdate="CASCADE"/>
+
+        <addForeignKeyConstraint baseTableSchemaName = "wallet_service_schema"
+                                 baseTableName="transaction" baseColumnNames="bank_account"
+                                 constraintName="transaction_bank_account_bank_account_id"
+                                 referencedTableSchemaName = "wallet_service_schema"
+                                 referencedTableName="bank_account" referencedColumnNames="id" onUpdate="CASCADE"/>
+
+    </changeSet>
+
+</databaseChangeLog>

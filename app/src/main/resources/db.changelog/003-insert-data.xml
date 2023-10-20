@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet author="StreletsA" id="003-insert-data">
+
+        <insert schemaName="wallet_service_schema" tableName="person">
+            <column name="passport" value="4400 567489"/>
+            <column name="login" value="victorIvanov"/>
+            <column name="password" value="12345"/>
+        </insert>
+        <insert schemaName="wallet_service_schema" tableName="bank_account">
+            <column name="cash_value" value="100000"/>
+            <column name="person" value="1"/>
+        </insert>
+        <insert schemaName="wallet_service_schema" tableName="transaction">
+            <column name="transaction_type" value="CASH_IN"/>
+            <column name="cash_value" value="100"/>
+            <column name="date" value="2023-10-18 13:09:05.8240914"/>
+            <column name="bank_account" value="1"/>
+            <column name="transaction_code" value="1"/>
+        </insert>
+        <insert schemaName="wallet_service_schema" tableName="account_action">
+            <column name="action_type" value="LOG_IN"/>
+            <column name="date" value="2023-10-18 13:09:05.8240914"/>
+            <column name="person" value="1"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

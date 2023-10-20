@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Класс, описывающий пользователя
  */
@@ -11,8 +14,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Person {
-    /** Электронный адрес пользователя, является уникальным */
-    private String uuid;
+    /** Уникальный идентификатор пользователя */
+    private Long id;
     /** Паспортные данные пользователя */
     private String passport;
     /** Логин пользователя, является уникальным */
@@ -21,4 +24,6 @@ public class Person {
     private String password;
     /** Банковский счет, привязанный к аккаунту, создается вместе с пользователем */
     private BankAccount bankAccount;
+    /** Список действий, связанных с аккаунтом пользователя */
+    private List<AccountAction> accountActions = new ArrayList<>();
 }

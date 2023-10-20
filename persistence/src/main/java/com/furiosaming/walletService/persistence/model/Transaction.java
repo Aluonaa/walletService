@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Класс, описывающий транзакцию, проведенную на банковском счету
@@ -19,9 +19,13 @@ public class Transaction {
     /** Тип транзакции (снятие денежных средств/пополнение счета) */
     private TransactionType transactionType;
     /** Количество денежных средств, которые оказались на счету или были выведены в процессе транзакции */
-    private double cashValue;
+    private Long cashValue;
     /** Дата и время проведения транзакции */
-    private Date date;
+    private LocalDateTime date;
+    /** Аккаунт, на котором произошла транзакция */
+    private BankAccount bankAccount;
+    /** Уникальный код транзакции */
+    private Long transactionCode;
 
     /**
      * Метод для получения строкового представления объекта класса.
