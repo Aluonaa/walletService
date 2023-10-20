@@ -9,6 +9,7 @@ import com.furiosaming.walletService.service.service.BankAccountService;
 import com.furiosaming.walletService.service.service.PersonService;
 import com.furiosaming.walletService.service.service.impl.PersonServiceImpl;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -29,6 +30,7 @@ public class PersonServiceTest {
     }
 
     @Test
+    @DisplayName("Тест на успешную авторизацию")
     void shouldAuthorize(){
         String login = "victorIvanov";
         String password = "12345";
@@ -39,6 +41,7 @@ public class PersonServiceTest {
     }
 
     @Test
+    @DisplayName("Тест на неудачную попытку авторизации из-за ввода неверного логина и пароля")
     void shouldNotAuthorize(){
         String login = "maxKlimov";
         String password = "8888";
@@ -48,6 +51,7 @@ public class PersonServiceTest {
     }
 
     @Test
+    @DisplayName("Тест на неудачную попытку создания пользователя из-за незаполненных полей")
     void shouldNotCreate(){
         Person person = new Person();
         Response<Person> response = personService.createPerson(person);
@@ -55,6 +59,7 @@ public class PersonServiceTest {
     }
 
     @Test
+    @DisplayName("Тест на успешное создание пользователя")
     void shouldCreate(){
         Person person = new Person(1L, "1", "1", "1", new BankAccount(), new ArrayList<>());
         Mockito.when(personRepository.createPerson(person)).thenReturn(person);
@@ -64,6 +69,7 @@ public class PersonServiceTest {
     }
 
     @Test
+    @DisplayName("Тест на неудачную попытку создания пользователя из-за ввода уже существующего логина")
     void shouldNotCreateByLogin(){
         Person person = new Person(1L, "1", "1", "1", new BankAccount(), new ArrayList<>());
         Mockito.when(personRepository.findByLogin(person.getLogin())).thenReturn(person);

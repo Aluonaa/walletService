@@ -1,6 +1,7 @@
 package com.furiosaming.walletService.In.service;
 
 import com.furiosaming.walletService.In.StaticVariables;
+import com.furiosaming.walletService.persistence.model.AccountAction;
 import com.furiosaming.walletService.persistence.model.BankAccount;
 import com.furiosaming.walletService.persistence.model.Person;
 import com.furiosaming.walletService.persistence.model.enums.ActionType;
@@ -30,7 +31,10 @@ public class AccountActions {
             registration();
         }
         else{
-            accountActionService.createAccountAction(response.getResult(), ActionType.REGISTRATION);
+            AccountAction accountAction = new AccountAction();
+            accountAction.setPerson(response.getResult());
+            accountAction.setActionType(ActionType.REGISTRATION);
+            accountActionService.createAccountAction(accountAction);
             start();
         }
     }
@@ -72,7 +76,10 @@ public class AccountActions {
                 start();
             }
             currentUser.setBankAccount(bankAccountResponse.getResult());
-            accountActionService.createAccountAction(currentUser, ActionType.LOG_IN);
+            AccountAction accountAction = new AccountAction();
+            accountAction.setPerson(currentUser);
+            accountAction.setActionType(ActionType.LOG_IN);
+            accountActionService.createAccountAction(accountAction);
             displayAuthorizedActionsVariants();
             chooseAuthorizedMenuItem();
         }
@@ -83,7 +90,10 @@ public class AccountActions {
      * @throws IOException исключения ввода-вывода
      */
     public static void logOut() throws IOException {
-        accountActionService.createAccountAction(currentUser, ActionType.LOG_OUT);
+        AccountAction accountAction = new AccountAction();
+        accountAction.setPerson(currentUser);
+        accountAction.setActionType(ActionType.LOG_OUT);
+        accountActionService.createAccountAction(accountAction);
         StaticVariables.currentUser = null;
         start();
     }

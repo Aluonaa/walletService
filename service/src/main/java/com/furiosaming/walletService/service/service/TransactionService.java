@@ -1,8 +1,6 @@
 package com.furiosaming.walletService.service.service;
 
-import com.furiosaming.walletService.persistence.model.Person;
 import com.furiosaming.walletService.persistence.model.Transaction;
-import com.furiosaming.walletService.persistence.model.enums.TransactionType;
 import com.furiosaming.walletService.service.response.Response;
 
 import java.util.List;
@@ -13,13 +11,10 @@ import java.util.List;
 public interface TransactionService {
     /**
      * Метод создания транзакции
-     * @param person текущий пользователь
-     * @param cash сумма транзакции
-     * @param transactionId уникальный идентификатор транзакции
-     * @param transactionType тип транзакции
+     * @param transaction транзакция, которую необходимо создать
      * @return созданная транзакция или ошибка
      */
-    Response<Transaction> createTransaction(Person person, Long cash, Long transactionId, TransactionType transactionType);
+    Response<Transaction> createTransaction(Transaction transaction);
 
     /**
      * Метод проверки уникальности кода транзакции

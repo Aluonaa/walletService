@@ -10,6 +10,7 @@ import com.furiosaming.walletService.service.response.Response;
 import com.furiosaming.walletService.service.service.BankAccountService;
 import com.furiosaming.walletService.service.service.TransactionService;
 
+
 /**
  * Имплементация интерфейса сервиса банковского счета
  */
@@ -50,79 +51,68 @@ public class BankAccountServiceImpl implements BankAccountService {
      */
     @Override
     public Response<BankAccount> createBankAccount(Person person) {
-            if(person != null && person.getId() != null){
-                BankAccount bankAccount = bankAccountRepository.createBankAccount(person);
-                if(bankAccount == null){
-                    return new Response.Builder<BankAccount>().failed(AppConstants.FAILED_TO_CREATE).build();
-                }
-                else return new Response.Builder<BankAccount>().success(bankAccount).build();
+        if(person != null && person.getId() != null){
+            BankAccount bankAccount = bankAccountRepository.createBankAccount(person);
+            if(bankAccount == null){
+                return new Response.Builder<BankAccount>().failed(AppConstants.FAILED_TO_CREATE).build();
             }
-            else return new Response.Builder<BankAccount>().missing(AppConstants.MISSING_FIELDS).build();
+            else return new Response.Builder<BankAccount>().success(bankAccount).build();
+        }
+        else return new Response.Builder<BankAccount>().missing(AppConstants.MISSING_FIELDS).build();
     }
 
 
 
     /**
      * Метод вывода средств и пополнения счета
-     * @param person текущий пользователь, от лица которого совершается операция
-     * @param transactionCode уникальный идентификатор транзакции
-     * @param cash сумма транзакции
-     * @param transactionType тип транзакции
+     * @param transaction транзакция, которую необходимо провести
      * @return возвращает либо успешный статус операции и текущую сумму на счету,
      * либо описание ошибки
      */
     @Override
-    public Response<Long> cashInOut(Person person,
-                                      Long transactionCode, Long cash, TransactionType transactionType) {
-        if (cash == null || cash<=0){
-            return new Response.Builder<Long>().wrongData(AppConstants.INCORRECT_SUM).build();
-        }
-        Response<Long> transactionResponse = transactionService.getTransactionByTransactionCode(transactionCode);
+    public Response<Long> cashInOut(Transaction transaction) {
+        Response<Long> transactionResponse = transactionService.getTransactionByTransactionCode(transaction.getTransactionCode());
         if(transactionResponse.getDescription().equals(AppConstants.TRASACTION_CODE_ALREADY_EXISTS)){
             return new Response.Builder<Long>().alreadyExist(AppConstants.TRASACTION_CODE_ALREADY_EXISTS).build();
         }
-        if(transactionType.equals(TransactionType.CASH_IN)){
-            return cashIn(person, cash, transactionCode, transactionType);
+        if(transaction.getTransactionType().equals(TransactionType.CASH_IN)){
+            return cashIn(transaction);
         }else {
-            return cashOut(person, cash, transactionCode, transactionType);
+            return cashOut(transaction);
         }
     }
 
     /**
      * Метод, который создает непосредственно транзакцию пополнения счета
-     * @param person текущий пользователь, от лица которого совершается операция
-     * @param transactionId уникальный идентификатор транзакции
-     * @param cash сумма транзакции
-     * @param transactionType тип транзакции
+     * @param transaction транзакция, которую необходимо провести
      * @return возвращает либо текущуюсумму на счете, либо описание ошибки
      */
-    public Response<Long> cashIn(Person person, Long cash, Long transactionId, TransactionType transactionType) {
-        Response<Transaction> transactionResponse = transactionService.createTransaction(person, cash, transactionId, transactionType);
+    public Response<Long> cashIn(Transaction transaction) {
+        Response<Transaction> transactionResponse = transactionService.createTransaction(transaction);
         if(transactionResponse.isStatus()){
-            person.getBankAccount().setCashValue(person.getBankAccount().getCashValue() + cash);
-            Long result = person.getBankAccount().getCashValue();
+            transaction.getBankAccount().setCashValue(transaction.getBankAccount().getCashValue() + transaction.getCashValue());
+            Long result = transaction.getBankAccount().getCashValue();
             return new Response.Builder<Long>().success(result).build();
         }
-        else return new Response.Builder<Long>().failed(AppConstants.FAILED_TO_CASH_IN).build();
+        return new Response.Builder<Long>().failed(AppConstants.FAILED_TO_CASH_IN).build();
     }
+
 
     /**
      * Метод, который создает непосредственно транзакцию вывода денежных средств
-     * @param person текущий пользователь, от лица которого совершается операция
-     * @param transactionId уникальный идентификатор транзакции
-     * @param cash сумма транзакции
-     * @param transactionType тип транзакции
+     * @param transaction транзакция, которую необходимо провести
      * @return возвращает либо текущуюсумму на счете, либо описание ошибки
      */
-    public Response<Long> cashOut(Person person, Long cash, Long transactionId, TransactionType transactionType) {
-        if(person.getBankAccount().getCashValue() < cash){
+    public Response<Long> cashOut(Transaction transaction) {
+        if(transaction.getBankAccount().getCashValue() < transaction.getCashValue()){
             return new Response.Builder<Long>().wrongData(AppConstants.INSUFFICIENT_FUNDS).build();
         }
-        else{
-            transactionService.createTransaction(person, cash, transactionId, transactionType);
-            person.getBankAccount().setCashValue(person.getBankAccount().getCashValue() - cash);
-            Long result = person.getBankAccount().getCashValue();
+        Response<Transaction> transactionResponse = transactionService.createTransaction(transaction);
+        if(transactionResponse.isStatus()){
+            transaction.getBankAccount().setCashValue(transaction.getBankAccount().getCashValue() - transaction.getCashValue());
+            Long result = transaction.getBankAccount().getCashValue();
             return new Response.Builder<Long>().success(result).build();
         }
+        return new Response.Builder<Long>().failed(AppConstants.FAILED_TO_CASH_IN).build();
     }
 }

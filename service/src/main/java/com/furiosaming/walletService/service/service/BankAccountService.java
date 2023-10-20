@@ -2,7 +2,7 @@ package com.furiosaming.walletService.service.service;
 
 import com.furiosaming.walletService.persistence.model.BankAccount;
 import com.furiosaming.walletService.persistence.model.Person;
-import com.furiosaming.walletService.persistence.model.enums.TransactionType;
+import com.furiosaming.walletService.persistence.model.Transaction;
 import com.furiosaming.walletService.service.response.Response;
 
 
@@ -27,13 +27,9 @@ public interface BankAccountService {
 
     /**
      * Метод вывода средств и пополнения счета
-     * @param person текущий пользователь, от лица которого совершается операция
-     * @param transactionCode уникальный код транзакции
-     * @param cash сумма транзакции
-     * @param transactionType тип транзакции
+     * @param transaction транзакция, которую необходимо провести
      * @return возвращает либо успешный статус операции и текущую сумму на счету,
      * либо описание ошибки
      */
-    Response<Long> cashInOut(Person person, Long transactionCode,
-                               Long cash, TransactionType transactionType);
+    Response<Long> cashInOut(Transaction transaction);
 }

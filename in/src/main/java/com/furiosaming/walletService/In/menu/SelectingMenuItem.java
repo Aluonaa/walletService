@@ -1,5 +1,7 @@
 package com.furiosaming.walletService.In.menu;
 
+import com.furiosaming.walletService.persistence.model.enums.TransactionType;
+
 import java.io.IOException;
 
 import static com.furiosaming.walletService.In.help.InputErrorsCorrection.menuItemErrorsCorrection;
@@ -48,10 +50,10 @@ public class SelectingMenuItem {
         selectedMenuItem = menuItemErrorsCorrection(selectedMenuItem);
         if(selectedMenuItem == 1){
             getBalance();
-        } else if(selectedMenuItem == 2){
-            cashIn();
+        } else if(selectedMenuItem == 2 ){
+            cashInOut(TransactionType.CASH_IN);
         } else if(selectedMenuItem == 3){
-            cashOut();
+            cashInOut(TransactionType.CASH_OUT);
         } else if(selectedMenuItem == 4) {
             getTransactionsHistory();
         } else if(selectedMenuItem == 5) {

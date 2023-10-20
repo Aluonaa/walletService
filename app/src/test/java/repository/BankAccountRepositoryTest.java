@@ -6,10 +6,7 @@ import com.furiosaming.walletService.repository.BankAccountRepository;
 import com.furiosaming.walletService.repository.PersonRepository;
 import com.furiosaming.walletService.repository.impl.BankAccountRepositoryImpl;
 import com.furiosaming.walletService.repository.impl.PersonRepositoryImpl;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 public class BankAccountRepositoryTest {
@@ -30,6 +27,7 @@ public class BankAccountRepositoryTest {
     }
 
     @Test
+    @DisplayName("Тест на успешное создание банковского счета")
     void shouldCreateBankAccount() {
         Person person = new Person();
         person.setPassword("password");
@@ -41,6 +39,7 @@ public class BankAccountRepositoryTest {
     }
 
     @Test
+    @DisplayName("Тест на успешное получение банковского счета по id пользователя")
     void shouldGetBankAccountByPersonId(){
         Long id = 1L;
         BankAccount bankAccount = bankAccountRepository.getBankAccountByPersonId(id);
@@ -48,6 +47,8 @@ public class BankAccountRepositoryTest {
     }
 
     @Test
+    @DisplayName("Тест на неудачную попытку получения счета по id пользователя" +
+            "при вводе несуществуюшего id пользователя")
     void shouldNotGetBankAccountByPersonId(){
         Long id = 8888888L;
         BankAccount bankAccount = bankAccountRepository.getBankAccountByPersonId(id);

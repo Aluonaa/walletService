@@ -28,6 +28,7 @@ public class AccountActionRepositoryTest {
     }
 
     @Test
+    @DisplayName("Тест на успешное создание действия в аккаунте")
     void shouldCreateAccountAction(){
         AccountAction accountAction = new AccountAction();
         accountAction.setActionType(ActionType.LOG_IN);

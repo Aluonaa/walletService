@@ -3,10 +3,7 @@ package repository;
 import com.furiosaming.walletService.persistence.model.Person;
 import com.furiosaming.walletService.repository.PersonRepository;
 import com.furiosaming.walletService.repository.impl.PersonRepositoryImpl;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 public class PersonRepositoryTest {
@@ -26,6 +23,7 @@ public class PersonRepositoryTest {
     }
 
     @Test
+    @DisplayName("Тест на успешное создание пользователя")
     void shouldCreatePerson() {
         Person person = new Person();
         person.setPassword("password");
@@ -36,6 +34,7 @@ public class PersonRepositoryTest {
     }
 
     @Test
+    @DisplayName("Тест на успешный поиск пользователя по логину")
     void shouldFindByLogin(){
         String login = "login";
         Person person = personRepository.findByLogin(login);
@@ -43,6 +42,8 @@ public class PersonRepositoryTest {
     }
 
     @Test
+    @DisplayName("Тест на неудачную попытку поиска пользователя по логину" +
+            "при вводе несуществующего логина")
     void shouldNotFindByLogin(){
         String login = "falseLogin";
         Person person = personRepository.findByLogin(login);
@@ -50,6 +51,8 @@ public class PersonRepositoryTest {
     }
 
     @Test
+    @DisplayName("Тест на неудачную попытку авторизации при вводе неверных" +
+            "логина и пароля")
     void shouldNotAuthorizeByLoginAndPassword(){
         String login = "falseLogin";
         String password = "falsePassword";
@@ -58,6 +61,7 @@ public class PersonRepositoryTest {
     }
 
     @Test
+    @DisplayName("Тест на неудачную попытку авторизации при вводе неверного логина")
     void shouldNotAuthorizeByLogin(){
         String login = "falseLogin";
         String password = "password";
@@ -66,6 +70,7 @@ public class PersonRepositoryTest {
     }
 
     @Test
+    @DisplayName("Тест на неудачную попытку авторизации при вводе неверного пароля")
     void shouldNotAuthorizeByPassword(){
         String login = "login";
         String password = "falsePassword";
@@ -74,6 +79,7 @@ public class PersonRepositoryTest {
     }
 
     @Test
+    @DisplayName("Тест на успешную авторизацию")
     void shouldAuthorize(){
         String login = "login";
         String password = "password";

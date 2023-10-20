@@ -44,35 +44,22 @@ public class ActionsForAuthorized {
 
     /**
      * Метод, позволяющий пополнить счет текущего пользователя
+     * или вывести из него деньги
      * @throws IOException исключения ввода-вывода
      */
-    public static void cashIn() throws IOException {
-        Response<Long> result = bankAccountService.cashInOut( currentUser,
-                inputCodeForCashInOut(), inputSumForCashInOut(), TransactionType.CASH_IN);
+    public static void cashInOut(TransactionType transactionType) throws IOException {
+        Transaction transaction = new Transaction();
+        transaction.setBankAccount(currentUser.getBankAccount());
+        transaction.setTransactionCode(inputCodeForCashInOut());
+        transaction.setCashValue(inputSumForCashInOut());
+        transaction.setTransactionType(transactionType);
+        Response<Long> result = bankAccountService.cashInOut(transaction);
         System.out.println(result.getDescription());
         if(result.isStatus()){
             System.out.println("Текущий баланс счета: " + result.getResult() + " руб.");
         }
         else{
-            cashIn();
-        }
-        displayAuthorizedActionsVariants();
-        chooseAuthorizedMenuItem();
-    }
-
-    /**
-     * Метод, позволяющий вывести средства со счета текущего пользователя
-     * @throws IOException исключения ввода-вывода
-     */
-    public static void cashOut() throws IOException {
-        Response<Long> result = bankAccountService.cashInOut(currentUser,
-                inputCodeForCashInOut(), inputSumForCashInOut(), TransactionType.CASH_OUT);
-        System.out.println(result.getDescription());
-        if(result.isStatus()){
-            System.out.println("Текущий баланс счета: " + result.getResult() + " руб.");
-        }
-        else{
-            cashOut();
+            cashInOut(transactionType);
         }
         displayAuthorizedActionsVariants();
         chooseAuthorizedMenuItem();

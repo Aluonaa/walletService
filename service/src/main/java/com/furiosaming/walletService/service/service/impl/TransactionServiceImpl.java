@@ -1,14 +1,11 @@
 package com.furiosaming.walletService.service.service.impl;
 
-import com.furiosaming.walletService.persistence.model.Person;
 import com.furiosaming.walletService.persistence.model.Transaction;
-import com.furiosaming.walletService.persistence.model.enums.TransactionType;
 import com.furiosaming.walletService.repository.TransactionRepository;
 import com.furiosaming.walletService.service.constants.AppConstants;
 import com.furiosaming.walletService.service.response.Response;
 import com.furiosaming.walletService.service.service.TransactionService;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +35,7 @@ public class TransactionServiceImpl implements TransactionService {
         if(transactionRepository.isPresentTransactionByTransactionCode(transactionCode)){
             return new Response.Builder<Long>().alreadyExist(AppConstants.TRASACTION_CODE_ALREADY_EXISTS).build();
         }
-        else return new Response.Builder<Long>().success(transactionCode).build();
+        return new Response.Builder<Long>().success(transactionCode).build();
     }
 
     /**
@@ -57,29 +54,23 @@ public class TransactionServiceImpl implements TransactionService {
 
     /**
      * Метод создания транзакции
-     * @param person текущий пользователь
-     * @param cash сумма транзакции
-     * @param transactionCode уникальный идентификатор транзакции
-     * @param transactionType тип транзакции
+     * @param transaction транзакция, которую необходимо создать
      * @return созданная транзакция или ошибка
      */
     @Override
-    public Response<Transaction> createTransaction(Person person,
-            Long cash, Long transactionCode, TransactionType transactionType) {
-        if(person != null && person.getId() != null && cash != null && transactionCode != null
-        && transactionType != null){
-            Transaction transaction = new Transaction();
-            transaction.setTransactionType(transactionType);
-            transaction.setCashValue(cash);
-            transaction.setDate(LocalDateTime.now());
-            transaction.setBankAccount(person.getBankAccount());
-            transaction.setTransactionCode(transactionCode);
-            Transaction createdTransaction = transactionRepository.createTransaction(transaction);
-            if (createdTransaction.getId() == null){
-                return new Response.Builder<Transaction>().failed(AppConstants.FAILED_TO_CREATE).build();
-            }
-            else return new Response.Builder<Transaction>().success(createdTransaction).build();
+    public Response<Transaction> createTransaction(Transaction transaction) {
+        if (transaction.getBankAccount() == null || transaction.getBankAccount().getId() == null
+                || transaction.getCashValue() == null || transaction.getTransactionCode() == null
+                || transaction.getTransactionType() == null){
+            return new Response.Builder<Transaction>().missing(AppConstants.MISSING_FIELDS).build();
         }
-        else return new Response.Builder<Transaction>().missing(AppConstants.MISSING_FIELDS).build();
+        if (transaction.getCashValue() <=0){
+            return new Response.Builder<Transaction>().wrongData(AppConstants.INCORRECT_SUM).build();
+        }
+        Transaction createdTransaction = transactionRepository.createTransaction(transaction);
+        if (createdTransaction.getId() == null){
+            return new Response.Builder<Transaction>().failed(AppConstants.FAILED_TO_CREATE).build();
+        }
+        return new Response.Builder<Transaction>().success(createdTransaction).build();
     }
 }
