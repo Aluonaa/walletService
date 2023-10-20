@@ -12,11 +12,12 @@
     <artifactId>repository</artifactId>
     <packaging>jar</packaging>
 
+
     <dependencies>
         <dependency>
             <groupId>com.furiosaming</groupId>
             <artifactId>persistence</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${persistence.version}</version>
         </dependency>
     </dependencies>
 
