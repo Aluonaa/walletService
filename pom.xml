@@ -19,6 +19,12 @@
         <postgresql.version>42.3.8</postgresql.version>
         <testcontainers-postgresql.version>1.19.1</testcontainers-postgresql.version>
         <mockito-core.version>5.3.1</mockito-core.version>
+        <mapstruct.version>1.5.5.Final</mapstruct.version>
+        <jakarta.servlet.version>6.0.0</jakarta.servlet.version>
+        <jackson.version>2.15.3</jackson.version>
+        <aspectj.version>1.9.20.1</aspectj.version>
+        <plugin.war.version>3.3.1</plugin.war.version>
+        <plugin.aspectj.version>1.14.0</plugin.aspectj.version>
         <persistence.version>1.0-SNAPSHOT</persistence.version>
         <repository.version>1.0-SNAPSHOT</repository.version>
     </properties>
@@ -29,6 +35,7 @@
         <module>service</module>
         <module>repository</module>
         <module>in</module>
+        <module>web</module>
     </modules>
 
     <build>
@@ -36,9 +43,42 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>${plugin.war.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>aspectj-maven-plugin</artifactId>
+                <version>${plugin.aspectj.version}</version>
+                <configuration>
+                    <complianceLevel>16</complianceLevel>
+                    <source>16</source>
+                    <target>16</target>
+                    <showWeaveInfo>true</showWeaveInfo>
+                    <verbose>true</verbose>
+                    <Xlint>ignore</Xlint>
+                    <encoding>UTF-8 </encoding>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${mapstruct.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
                     <source>17</source>
                     <target>17</target>
                 </configuration>

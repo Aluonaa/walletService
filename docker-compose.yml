@@ -10,3 +10,13 @@ services:
       POSTGRES_USER: strelets
     ports:
       - "5432:5432"
+  test:
+      container_name: walletServiceTest
+      image: postgres:13.3-alpine
+      restart: always
+      environment:
+        POSTGRES_DB: walletServiceTest
+        POSTGRES_PASSWORD: strelets
+        POSTGRES_USER: strelets
+      ports:
+        - "5433:5432"
