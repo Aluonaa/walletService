@@ -30,10 +30,15 @@
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.aspectj</groupId>-->
+<!--            <artifactId>aspectjrt</artifactId>-->
+<!--            <version>${aspectj.version}</version>-->
+<!--        </dependency>-->
         <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjrt</artifactId>
-            <version>${aspectj.version}</version>
+            <groupId>com.furiosaming</groupId>
+            <artifactId>service</artifactId>
+            <version>${service.version}</version>
         </dependency>
     </dependencies>
 

@@ -16,5 +16,5 @@ public class PersonDto {
     /** Логин пользователя, является уникальным */
     private String login;
     /** Банковский счет, привязанный к аккаунту, создается вместе с пользователем */
-    private BankAccount bankAccount;
+    private BankAccountDto bankAccountDto;
 }

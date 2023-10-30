@@ -21,7 +21,7 @@ public class TransactionDto {
     /** Дата и время проведения транзакции */
     private LocalDateTime date;
     /** Аккаунт, на котором произошла транзакция */
-    private BankAccount bankAccount;
+    private BankAccountDto bankAccountDto;
     /** Уникальный код транзакции */
     private Long transactionCode;
 

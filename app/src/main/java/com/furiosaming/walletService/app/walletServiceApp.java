@@ -1,7 +1,6 @@
 package com.furiosaming.walletService.app;
 
 
-import com.furiosaming.walletService.In.menu.Menu;
 
 import java.io.IOException;
 
@@ -25,6 +24,6 @@ public class walletServiceApp {
      */
     public static void main(String[] args) throws IOException {
         createDataBase();
-        Menu.start();
+        //Menu.start();
     }
 }

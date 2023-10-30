@@ -6,6 +6,7 @@ import com.furiosaming.walletService.repository.dbProperties.PropertiesLoader;
 import com.furiosaming.walletService.repository.TransactionRepository;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -28,7 +29,7 @@ public class TransactionRepositoryImpl implements TransactionRepository {
             connection.setAutoCommit(false);
             preparedStatement.setString(1, String.valueOf(transaction.getTransactionType()));
             preparedStatement.setLong(2, transaction.getCashValue());
-            preparedStatement.setTimestamp(3, Timestamp.valueOf(transaction.getDate()));
+            preparedStatement.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
             preparedStatement.setLong(4,transaction.getBankAccount().getId());
             preparedStatement.setLong(5, transaction.getTransactionCode());
             preparedStatement.executeUpdate();

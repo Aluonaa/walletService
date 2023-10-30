@@ -2,7 +2,6 @@ package com.furiosaming.walletService.In.menu;
 
 import java.io.IOException;
 
-import static com.furiosaming.walletService.In.menu.SelectingMenuItem.chooseStartMenuItem;
 
 import static com.furiosaming.walletService.In.menu.MenuVariants.displayStartMenuVariants;
 
@@ -17,7 +16,7 @@ public class Menu {
      */
     public static void start() throws IOException {
         displayStartMenuVariants();
-        chooseStartMenuItem();
+        //chooseStartMenuItem();
     }
 }
 
