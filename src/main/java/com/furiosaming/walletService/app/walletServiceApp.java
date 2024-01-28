@@ -1,4 +1,4 @@
-package com.furiosaming.walletService.app;
+ package com.furiosaming.walletService.app;
 
 
 
@@ -22,6 +22,8 @@ public class walletServiceApp {
      * @param args аргументы командной строки
      * @throws IOException исключения ввода-вывода
      */
+
+
     public static void main(String[] args) throws IOException {
         createDataBase();
         //Menu.start();

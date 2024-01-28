@@ -21,10 +21,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
-@WebServlet("/register")
+@WebServlet("/register/*")
 public class SecServlet extends HttpServlet {
 
     //private PersonService personService;
@@ -37,24 +39,31 @@ public class SecServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession();
-        Integer visitCounter = (Integer) session.getAttribute("visitCounter");
-        if (visitCounter == null) {
-            visitCounter = 1;
-        } else {
-            visitCounter++;
+        resp.setContentType("application/json");
+        String login = req.getParameter("login");
+        //resp.getWriter().write(login);
+
+        PersonServiceImpl personService = new PersonServiceImpl(new PersonRepositoryImpl(),
+                new BankAccountServiceImpl(new BankAccountRepositoryImpl(),
+                        new TransactionServiceImpl(new TransactionRepositoryImpl())));
+
+        Person person = personService.getPersonByLogin(login);
+        if(person == null){
+            resp.getWriter().write("Пользователь не найден");
         }
-        session.setAttribute("visitCounter", visitCounter);
-        String username = req.getParameter("username");
-        resp.setContentType("text/html");
-        PrintWriter printWriter = resp.getWriter();
-        if (username == null) {
-            printWriter.write("Hello, Anonymous" + "<br>");
-        } else {
-            printWriter.write("Hello, " + username + "<br>");
-        }
-        printWriter.write("Page was visited " + visitCounter + " times.");
-        printWriter.close();
+        else resp.getWriter().write(String.valueOf(person));
+//        ObjectMapper objectMapper = new ObjectMapper();
+//      resp.getWriter().write(String.valueOf(person));  String postJson = mapper.writeValueAsString(post);
+//        try (final BufferedReader in = new BufferedReader(new InputStreamReader(req.getInputStream()))) {
+//            String inputLine;
+//            final StringBuilder content = new StringBuilder();
+//            while ((inputLine = in.readLine()) != null) {
+//                content.append(inputLine);
+//            }
+//            resp.getWriter().write(String.valueOf(content));
+//        } catch (final Exception ex) {
+//            ex.printStackTrace();
+//        }
     }
 
     @Override
@@ -67,10 +76,9 @@ public class SecServlet extends HttpServlet {
                         new TransactionServiceImpl(new TransactionRepositoryImpl())));
         try {
             Person person = objectMapper.readValue(req.getInputStream(), Person.class);
-            PersonRepositoryImpl personRepository = new PersonRepositoryImpl();
-            //Response<Person> response = personService.createPerson(person);
+            Response<Person> response = personService.createPerson(person);
 
-            if (true) {
+            if (response.isStatus()) {
                 resp.setStatus(HttpServletResponse.SC_OK);
                 resp.getWriter().write("{\"message\": \"Registration successful\"}");
             } else {
